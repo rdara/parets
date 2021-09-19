@@ -1,1 +1,47 @@
-# parets
+# Parets
+
+Parets, Parallel and Repeatable Tests, are Junit tests in a test class.
+
+JUnit 4 unit tests within a test class are executed in sequential order. The test classes can be run in parallel, but not tests within the class.
+
+Tests are executed as an aggregated unit and even if one test fails, entire test suite fails.
+
+It would be nice to run tests in parallel and immediately retry only those tests that failed. 
+
+Parets is a feasible solution, on top of JUnit 4, where we can run tests in parallel and repeat only those failing tests immediately after their failure. This solution also provisions good control on each test class. 
+Parets works well with JNuit's parameterized tests. The annotation based control provides better readability and aesthetics.
+
+## Usage
+The ParallelRunner and/or ParameterizedParallelRunner will run the tests in the test class concurrently. 
+For parameterized tests, ParameterizedParallelRunner. Otherwise, use ParallelRunner.
+
+Following configuration options are available to you:
+
+
+
+| @RunWith(ParallelRunner.class)                 | Usage | System Property | Default | Description |
+| or                                             |       |                 |         |             |
+| @RunWith( ParameterizedParallelRunner.class)   |       |                 |         |             |
+| ---------------------------------------------- | ----- | --------------- | ------- | ----------- |
+| ParallelThreads | @ParallelRunner.ParallelThreads(X) | junit.parallel.threads | 8 | How many tests executed in parallel. |
+|                 | @ParameterizedParallelRunner.ParallelThreads(X)|            |   |                                      |
+| WaitTimeForTermination | @ParallelRunner.WaitTimeForTermination(X)             | junit.waittime.for.termination | 10 | How long to wait before terminating all threads. In minutes. |
+|                        | @ParameterizedParallelRunner.WaitTimeForTermination(X) |                               |    |                                                              |
+| FailedAttempts         | @ParallelRunner.FailedAttempts(X)                      | junit.failed.attempts | 1 | How many times a test to be repeated. |
+|                        | @ParameterizedParallelRunner.FailedAttempts(X)         |                       |   | 0 means, dont repeat.                 |
+|                        |                                                        |                       |   | 1 means, repeat the failed test once. |     
+|                        |                                                        |                       |   | 5 means, repeat the failed test 5 times.|
+
+## Configuration Priority Order
+
+1. User configured value
+User configured value takes precedence over system property and default value. 
+If user annotates, @ParallelRunner.ParallelThreads(4) , then maximum of 4 tests will be executed in parallel.
+
+2. System Property
+If user configured value not found and system property is defined, then that system property will be used. If system property, junit.failed.attempts is defined as 2, then a failed test will be repeated twice.
+
+3. Default Value
+If neither test class is annotated with configured value nor a system property id defined, then the default value will be executed.
+
+## Demo Tests
