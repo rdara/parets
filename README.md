@@ -61,7 +61,7 @@ The **ParallelDemoTest** has 2 Tests,
 
 Each test is parameterized with 8 HttpMethods and hence making them as 16 tests in total.
 
-** testParallelAndRetry ** Executes each test 3 times because of **failTwice** of **Demo.class**. Hence, total of 8 * 3 = 24 tests.
+**testParallelAndRetry** Executes each test 3 times because of **failTwice** of **Demo.class**. Hence, total of 8 * 3 = 24 tests.
 
 So just the following 2 tests,
 ```
