@@ -24,7 +24,6 @@ Following configuration options are available to you:
 | @RunWith(ParallelRunner.class)                 |       |                 |         |             |
 | @RunWith(ParameterizedParallelRunner.class)   |       |                 |         |             |
 | @RunWith(@Parameterized.UseParametersRunnerFactory(RetriableBlockJUnit4ClassRunnerFactory.class))   |       |                 |         |             |
-| ---------------------------------------------- | ----- | --------------- | ------- | ----------- |
 | ParallelThreads | @ParallelRunner.ParallelThreads(X) | junit.parallel.threads | 8 | How many tests executed in parallel. |
 |                 | @ParameterizedParallelRunner.ParallelThreads(X)|            |   |                                      |
 | WaitTimeForTermination | @ParallelRunner.WaitTimeForTermination(X)             | junit.waittime.for.termination | 10 | How long to wait before terminating all threads. In minutes. |
