@@ -1,63 +1,59 @@
 package pers.rdara.parets.demo.tests;
 
-import static org.junit.Assert.*;
-import static org.junit.Assert.fail;
+import static org.junit.Assert.assertEquals;
 import static pers.rdara.parets.demo.classes.HttpMethod.*;
-
-import java.util.Arrays;
-import java.util.Collection;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.junit.runners.Parameterized;
 
+import pers.rdara.parets.ParallelRunner;
 import pers.rdara.parets.demo.classes.Demo;
-import pers.rdara.parets.demo.classes.HttpMethod;
-import pers.rdara.parets.ParameterizedParallelRunner;
-import pers.rdara.parets.RetriableBlockJUnit4ClassRunnerFactory;
 
-@RunWith(ParameterizedParallelRunner.class)
-@ParameterizedParallelRunner.ParallelThreads(4)
-@ParameterizedParallelRunner.WaitTimeForTermination(5)
-@ParameterizedParallelRunner.FailedAttempts(2)
-@Parameterized.UseParametersRunnerFactory(RetriableBlockJUnit4ClassRunnerFactory.class)
+/*
+Demonstrates running all the tests in the test class in parallel, 4 at a time.
+ */
+@RunWith(ParallelRunner.class)
+@ParallelRunner.ParallelThreads(4)
+@ParallelRunner.WaitTimeForTermination(5)
 public class ParallelDemoTest {
-	private HttpMethod httpMethod;
-	private String expectedResult;
 
-	public ParallelDemoTest(HttpMethod method, String result) {
-		this.httpMethod = method;
-		this.expectedResult = result;
-	}
-
-	@Parameterized.Parameters(name="{0}_{1}")
-	public static Collection<Object[]> configs() {
-		return Arrays.asList(new Object[][] {
-				{GET, "get"},
-				{HEAD, "head"},
-				{POST, "post"},
-				{PUT, "put"},
-				{DELETE, "delete"},
-				{CONNECT,"connect"},
-				{OPTIONS,"options"},
-				{TRACE,"trace"}
-		});
-	}
-
-	// Will run all 8 tests with GET, HEAD, ...4 at a time, because of ParameterizedParallelRunner.ParallelThreads(4)
 	@Test
-	public void testParallel() {
-		assertEquals(Demo.delayedHttpCall(httpMethod), expectedResult);
+	public void testGet() {
+		assertEquals(Demo.delayedHttpCall(GET), "get");
 	}
 
-	// Will run all 8 tests with GET, HEAD, ...4 at a time, because of ParameterizedParallelRunner.ParallelThreads(4)
-	// AND each test repeats 3 times. because of @ParameterizedParallelRunner.FailedAttempts(2)
-	// The failTwice fails 2 times, and will succeed 3rd time.
-	// So, 8 (parameterization) * 3 (retries) = 24 tests. And 4 at time will run concurrently.
-	// So, if all the 24 tests run sequential, then it will be 48 seconds, but now it will take 12 seconds.
 	@Test
-	public void testParallelAndRetry() {
-		assertEquals(Demo.failTwice(httpMethod), expectedResult);
+	public void testHead() {
+		assertEquals(Demo.delayedHttpCall(HEAD), "head");
 	}
 
+	@Test
+	public void testPost() {
+		assertEquals(Demo.delayedHttpCall(POST), "post");
+	}
+
+	@Test
+	public void testPut() {
+		assertEquals(Demo.delayedHttpCall(PUT), "put");
+	}
+
+	@Test
+	public void testDelete() {
+		assertEquals(Demo.delayedHttpCall(DELETE), "delete");
+	}
+
+	@Test
+	public void testConnect() {
+		assertEquals(Demo.delayedHttpCall(CONNECT), "connect");
+	}
+
+	@Test
+	public void testOptions() {
+		assertEquals(Demo.delayedHttpCall(OPTIONS), "options");
+	}
+
+	@Test
+	public void testTrace() {
+		assertEquals(Demo.delayedHttpCall(TRACE), "trace");
+	}
 }

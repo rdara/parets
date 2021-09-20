@@ -24,16 +24,18 @@ public class Demo {
 
     //Simulate flaky test that would fail twice and would succeed, if repeated for 3 times in total.
     //Will take 2+2+2 = 6 secs to succeed and retry would take 2 seconds.
-    public static String failTwice(HttpMethod method) {
-        int retries = failureCounterMap.compute( method, (key, value) -> {
-            value = ((value == null ? -1  : value) + 1) % 3;
+    public static String failTwice(HttpMethod method, int waitInSeconds) {
+        int retries = failureCounterMap.compute(method, (key, value) -> {
+            value = ((value == null ? -1 : value) + 1) % 3;
             return value;
         });
-        try {
-            TimeUnit.SECONDS.sleep(2);
-        }
-        catch (InterruptedException e) {
-            Thread.currentThread().interrupt();
+        if(waitInSeconds > 0) {
+            try {
+                TimeUnit.SECONDS.sleep(2);
+            }
+            catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+            }
         }
         return retries == 2 ? method.name().toLowerCase() : "Failing with retry: " + retries;
     }

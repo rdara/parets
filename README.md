@@ -19,10 +19,11 @@ For parameterized tests, ParameterizedParallelRunner. Otherwise, use ParallelRun
 
 Following configuration options are available to you:
 
-
-| @RunWith(ParallelRunner.class)                 | Usage | System Property | Default | Description |
-| or                                             |       |                 |         |             |
-| @RunWith( ParameterizedParallelRunner.class)   |       |                 |         |             |
+| Configuration                                  | Usage | System Property | Default | Description |
+| ---------------------------------------------- | ----- | --------------- | ------- | ----------- |
+| @RunWith(ParallelRunner.class)                 |       |                 |         |             |
+| @RunWith(ParameterizedParallelRunner.class)   |       |                 |         |             |
+| @RunWith(@Parameterized.UseParametersRunnerFactory(RetriableBlockJUnit4ClassRunnerFactory.class))   |       |                 |         |             |
 | ---------------------------------------------- | ----- | --------------- | ------- | ----------- |
 | ParallelThreads | @ParallelRunner.ParallelThreads(X) | junit.parallel.threads | 8 | How many tests executed in parallel. |
 |                 | @ParameterizedParallelRunner.ParallelThreads(X)|            |   |                                      |
@@ -54,7 +55,13 @@ The **Demo** class has a couple of methods to demonstrate parallism and repeatab
 
 ## Demo Tests
 
-The **ParallelDemoTest** has 2 Tests, 
+The **ParallelDemoTest** demonstrates how all the tests in a test class can be run in parallel.
+
+The **RetryDemoTest** demonstrates how all the tests in a test class are retriable. Even though, we can also run those tests in parallel, this demo class shows how to run them in sequential by setting the number of parallel threads as 1.
+
+The **ParameterizedParallelDemoTest** demonstrates, parameterization, parallism and retry nature all at once.
+
+The **ParameterizedParallelDemoTest** has 2 Tests, 
 
 **testParallel** and 
 **testParallelAndRetry**
@@ -73,7 +80,7 @@ public void testParallel() {
 
 @Test
 public void testParallelAndRetry() {
-    assertEquals(Demo.failTwice(httpMethod), expectedResult);
+    assertEquals(Demo.failTwice(httpMethod, 2), expectedResult);
 }
 ```
 is equivalent of 8 + 24 = 32 tests!
@@ -89,3 +96,4 @@ in stead of
 when run in sequential order.
 
 And, we can add more parallel threads with **@ParameterizedParallelRunner.ParallelThreads(..)** to increase parallism and hence performance.
+
