@@ -17,8 +17,6 @@ import org.junit.runners.model.Statement;
  
  @ParallelRunner.WaitTimeForTermination is the maximum  wait time a thread can wait for the test to complete.
  
- Look for imp-test/tests/esb-int/projects/SftpTest/test/com/workday/esb/transport/sftp/newer/ComprehensiveFtpConnectTest.java 
- as an example to use.
  */
 public class ParallelRunner extends BlockJUnit4ClassRunner implements ParallelInterface {
 	int failedAttempts = 1;
